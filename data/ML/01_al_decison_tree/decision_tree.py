@@ -3,7 +3,7 @@
 @version: 2017/12/25 025
 @author: Suen
 @contact: sunzh95@hotmail.com
-@file: bayes_classify
+@file: decision_tree
 @time: 10:46
 @note:  ??
 """
