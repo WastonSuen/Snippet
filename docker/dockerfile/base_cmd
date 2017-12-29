@@ -1,0 +1,35 @@
+sudo gpasswd -a ${USER} docker
+
+ssh-keygen -t rsa
+cat ~/.ssh/id_rsa.pub > authorized_keys
+
+# build:
+docker build -t wx-api:0.0.2 .
+
+# run:
+docker run -p 127.0.0.1:10011:10011 -p 127.0.0.1:10022:22 --name weapp -v /home/www/logs:/root/wx-api/logs -d wx-api:0.0.2
+# 挂载了本地www下logs到docker内root的logs
+
+# exec:
+docker exec weapp supervisord restart wx-xadmin
+
+# volume:
+docker run -p 127.0.0.1:20022:22 -v /root/wx-api/logs --name logdata -d sshd:ubuntu1404
+docker create -v /root/wx-api/logs --name logdata ubuntu:14.04
+# data volume doesn't need to be running
+
+# volumes-from:
+docker run -p 127.0.0.1:10011:10011 -p 127.0.0.1:10022:22 --name weapp --volumes-from logdata -d wx-api:0.0.2
+
+# fetch data from volumes:
+docker run --volumes-from logdata -v $(pwd):/backup --name fetchlog sshd:ubuntu1404 tar -zcvf /backup/logs.tar.gz -C /root/wx-api/logs ./
+
+# put data to volumes:
+docker run --volumes-from logdata -v $(pwd):/backup --name putdata sshd:ubuntu1404 tar -zxvf /backup/logs.tar.gz -C /root/wx-api/logs
+
+# link database container:
+docker run --name db -d db
+docker run -p 127.0.0.1:10022:22 -p 127.0.0.1:10011:10011 --name weapp --link db:dbalias -d wx-api:0.0.2
+# db is the database container, dbalias is the link name
+# in wx-api container hosts file: 172.17.0.5 db
+# so the db container doesn't need to expose the port.
