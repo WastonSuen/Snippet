@@ -1,11 +1,14 @@
 # coding=utf-8
 """
-@version: 2018/1/10 010
+@version: 2018/1/12 012
 @author: Suen
 @contact: sunzh95@hotmail.com
-@file: bayes_set_desc
-@time: 16:44
-@note:  set-of-words-model,词集模型, 不计算词出现次数, 只考虑出现与否。Bernoulli Naive Bayes
+@file: bayes_baging_desc
+@time: 10:04
+@note:  baging-of-words-model,词袋模型, 计算词出现次数。Multinomial Naive Bayes
+与set模型不同之处: 
+    0.数据集转向量vec_row[vocabulary.index(word)] += 1; 
+    1.数据集sum(train_vec[i, train_vec[i] >= 1]).
 """
 import csv
 import codecs
@@ -15,14 +18,14 @@ import numpy as np
 
 
 def load_dataset():
-    dataset = np.array([['dog', 'pig', 'cat', 1],
+    dataset = np.array([['dog', 'dog', 'cat', 1],
                         ['fish', 'shark', 'dolphin', 0],
                         ['elephant', 'lion', 'dog', 1],
-                        ['fish', 'sea', 'carp', 0],
+                        ['fish', 'fish', 'carp', 0],
                         ['pig', 'sheep', 'cow', 1],
                         ['whale', 'fish', 'dorado', 0],
                         ['bird', 'owl', 'duck', 2],
-                        ['bird', 'swallow', 'goose', 2],
+                        ['bird', 'swallow', 'bird', 2],
                         ['sparrow', 'magpie', 'crow', 2]
                         ])
 
@@ -45,7 +48,7 @@ def dataset2vec(vocabulary, dataset):
         vec_row = [0] * len(vocabulary)
         for word in row:
             if word in vocabulary:
-                vec_row[vocabulary.index(word)] = 1
+                vec_row[vocabulary.index(word)] += 1
             else:
                 pass
         vec.append(vec_row)
@@ -60,7 +63,7 @@ def write_to_csv(vocabulary, result_dict, filename='train.csv'):
             writer.writerow(v + [k])
 
 
-def bayes_training(train_vec, train_target):
+def bayes_training(train_vec, train_target, vocabulary):
     num_train_docs = len(train_vec)
     num_words = len(train_vec[0])
     targets_count = collections.Counter(train_target)
@@ -70,12 +73,12 @@ def bayes_training(train_vec, train_target):
     result = {}
     for i in range(num_train_docs):
         for target in targets:
-            result.setdefault(target, [np.ones(num_words), 2])  # 类条件概率
+            result.setdefault(target, [np.ones(num_words), len(vocabulary)])  # 类条件概率
             # 按理论来说,上式应为 result.setdefault(target, [np.zeros(num_words), 0]), 先验概率
             # 但是, 如果某词未在文档中出现,则p(w|c)为0,为避免这种情况,采用上述做法
             if train_target[i] == target:
                 result[target][0] += train_vec[i]
-                result[target][1] += len(train_vec[i, train_vec[i] == 1])
+                result[target][1] += sum(train_vec[i, train_vec[i] >= 1])
 
     for k, v in result.items():
         result[k] = list(np.log(v[0] / float(v[1])))
@@ -99,6 +102,7 @@ def main():
     train_set, train_target = load_dataset()
     vocabulary = load_vocabulary(train_set)
     trainvec = dataset2vec(vocabulary, train_set)
+    print(trainvec)
     test_set = [['dog', 'pig', 'boar'],
                 ['fish', 'salmon', 'dolphin'],
                 ['sparrow', 'swan', 'roc']
@@ -106,7 +110,7 @@ def main():
     test_target = [1, 0, 2]
     testvec = dataset2vec(vocabulary, test_set)
     print(vocabulary)
-    result_dict, targets_dict = bayes_training(trainvec, train_target)
+    result_dict, targets_dict = bayes_training(trainvec, train_target, vocabulary)
     # write_to_csv(vocabulary, result_dict)
     predictions = bayes_testing(result_dict, targets_dict, testvec)
     print('\nneed to be classified:\n\t', test_set)
