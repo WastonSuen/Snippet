@@ -11,7 +11,7 @@
 
 import time
 import threading
-from Snippet.daily.clockdeco import clock
+from daily.clockdeco import clock
 
 
 class MyThread(threading.Thread):
