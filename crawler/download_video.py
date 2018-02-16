@@ -13,8 +13,9 @@
 import os
 import json
 import urllib
-import threading
 import socket
+import threading
+import urllib.request
 
 socket.setdefaulttimeout(60)  # urllib timeout
 
@@ -29,13 +30,13 @@ class MyThread(threading.Thread):
         self.file = os.path.join(dir_path, self.filename).encode('gbk')
 
     def run(self):
-        print 'start %s' % self.filename
+        print('start %s' % self.filename)
         try:
-            urllib.urlretrieve(self.url, self.file)
+            urllib.request.urlretrieve(self.url, self.file)
         except:
             'err happened when processing {}'.format(self.i)
         else:
-            print 'done %s' % self.filename
+            print('done %s' % self.filename)
             num_set.remove(self.i)
 
 
@@ -59,9 +60,9 @@ def batch_download(url_list, path):
     while num_set:
         process(num_set)
         if num_set:
-            print 'failed file(s) Number set:%s\nauto retrying...\n' % json.dumps(list(num_set))
+            print('failed file(s) Number set:%s\nauto retrying...\n' % json.dumps(list(num_set)))
 
-    print 'all done'
+    print('all done')
 
 
 if __name__ == '__main__':
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     process(num_set)
 
     while num_set:
-        print 'failed file(s) Number set:%s\nauto retrying...\n' % json.dumps(list(num_set))
+        print('failed file(s) Number set:%s\nauto retrying...\n' % json.dumps(list(num_set)))
         process(num_set)
 
-    print 'all done'
+    print('all done')
