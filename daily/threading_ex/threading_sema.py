@@ -5,10 +5,10 @@
 @contact: sunzh95@hotmail.com
 @file: threading_sema
 @time: 13:17
-@note:  ??
+@note:  可用作连接池, 连接数被占满时调用acquire将阻塞
 """
 #
-
+import random
 import threading, time
 
 share_sema = threading.Semaphore(2)
@@ -24,7 +24,7 @@ class MyThread(threading.Thread):
         if share_sema.acquire():
             print("{} Got Resource share: {}".format(self.name, share))
             share += 1
-            time.sleep(1)
+            time.sleep(random.random()*10)
         print("{} Release Resource share: {}".format(self.name, share))
         share_sema.release()
 

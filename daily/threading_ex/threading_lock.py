@@ -5,7 +5,7 @@
 @contact: sunzh95@hotmail.com
 @file: threading_lock
 @time: 11:58
-@note:  ??
+@note:  Lock, 全局锁; Rlock:线程锁, 递归锁
 """
 #
 

@@ -5,7 +5,7 @@
 @contact: sunzh95@hotmail.com
 @file: threading_event
 @time: 13:36
-@note:  ??
+@note:  可挂起当前线程直到调用
 """
 #
 

@@ -5,7 +5,7 @@
 @contact: sunzh95@hotmail.com
 @file: threading_conditionlock
 @time: 12:11
-@note:  ??
+@note:  封装了Lock, Rlock, 有了wait, notify等特性, notify 并不会释放占用的锁
 """
 #
 
