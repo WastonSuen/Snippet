@@ -95,15 +95,17 @@ if __name__ == '__main__':
     s1.report()
     s2.report()
     print(s1 is s2)
-    # 使用装饰器的方法, 会使类变为函数, 为了将类保持, 可以将_decorator变为类
-    # 但会引入新的问题(与使用__new__关键字控制实例的问题一样)
+    # 使用装饰器(singleton())的方法, 会使类变为函数, 为了将类保持, 可以将_decorator变为类(singleton_class())
+    # 但会引入新的需要注意的点(与使用__new__关键字控制实例的问题一样)
 
 
     s1 = SingletonClsWithNewKeyword(1, 2, one=1, two=2)
     s2 = SingletonClsWithNewKeyword(1, 2, one=1, two=2)
     # s2 = SingletonClsWithNewKeyword(3, 4, three=3, four=4)
     # 第二次实例化该类, 会覆盖之前的实例, 并且会用新参数覆盖之前实例__init__的结果,
-    # 所以加入了参数比较过程, 若参数不同引发异常, 需特别注意这一点
+    # 这种情况需要根据需求来确定, 通常做法是不作处理, 让在本次运行环境中的单例可以更改,
+    # 旧的实例会随着新实例化结果的改变而改变, 这里的代码为了方便理解, 做了限制相同参数的处理,
+    # 所以加入了参数比较过程, 若参数不同引发异常。需特别注意这一点
     s1.report()
     s2.report()
     print(s1 is s2)
@@ -111,6 +113,7 @@ if __name__ == '__main__':
     s1 = SingletonClsWithMetaclass(1, 2, one=1, two=2)
     s2 = SingletonClsWithMetaclass(1, 2, one=1, two=2)
     # 第二次实例化该类, 会覆盖之前的实例, 并且会用新参数覆盖之前实例__init__的结果,
+    # (与使用__new__关键字控制实例的问题一样)
     # 所以加入了参数比较过程, 若参数不同引发异常, 需特别注意这一点
     s1.report()
     s2.report()
