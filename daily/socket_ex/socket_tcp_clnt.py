@@ -21,13 +21,13 @@ if __name__ == '__main__':
             data += '\n'
             clnt.sendall(data.encode('utf-8'))
             data = clnt.recv(1024)
-            print "Received From Server: {}".format(data.decode('utf-8').strip('\n'))
+            print("Received From Server: {}".format(data.decode('utf-8').strip('\n')))
             if data in (b'Bye', b'Bye\n'):
                 break
-            data = raw_input("Please give a message to server:\n")
+            data = input("Please give a message to server:\n")
     except socket.error as e:
-        print e
+        print(e)
     except Exception:
-        print 'Unknow Error'
+        print('Unknow Error')
     finally:
         clnt.close()

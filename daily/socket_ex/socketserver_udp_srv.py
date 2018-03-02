@@ -12,17 +12,17 @@
 __metaclass__ = type
 
 import threading
-import SocketServer
+import socketserver
 
 
-class MyHandle(SocketServer.DatagramRequestHandler):
+class MyHandle(socketserver.DatagramRequestHandler):
     def handle(self):
         data, socket = self.request
-        print "Received: {}".format(data.decode('utf-8'))
+        print("Received: {}".format(data.decode('utf-8')))
         socket.sendto(data, self.client_address)
 
         if data in (b'Bye', b'Bye\n'):
-            print 'server terminated'
+            print('server terminated')
             td = threading.Thread(target=terminate_srv, args=(srv,))
             td.start()
 
@@ -34,5 +34,5 @@ def terminate_srv(srv):
 if __name__ == '__main__':
     HOST = '127.0.0.1'
     PORT = 12345
-    srv = SocketServer.UDPServer((HOST, PORT), MyHandle)
+    srv = socketserver.UDPServer((HOST, PORT), MyHandle)
     srv.serve_forever()

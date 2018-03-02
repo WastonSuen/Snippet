@@ -8,11 +8,10 @@
 @note:  ??
 """
 #
+from tkinter import *
+from tkinter.ttk import *
 
 __metaclass__ = type
-
-from Tkinter import *
-from ttk import *
 
 import os
 import time
@@ -65,7 +64,7 @@ def recv_file(client, infos_len, file_name, compress):
                 break
             else:
                 break
-    print "Succeed reveiving {}".format(file_name)
+    print("Succeed reveiving {}".format(file_name))
     return True
 
 
@@ -75,7 +74,7 @@ def get_files_info(client):
     infos_data = recv_unit_file(client, headsize)
     infos_len, compress = struct.unpack(fmt_str, infos_data)
     data = pickle.loads(recv_file_data(client, infos_len))
-    print "Received file infos: {}".format(data)
+    print("Received file infos: {}".format(data))
     return data, compress
 
 
@@ -96,10 +95,10 @@ def recv_file_data(client, infos_len):
 def process_connetion(client):
     files_info, compress = get_files_info(client)
     for size, file_name in files_info:
-        print "Starting receiving {} of {}".format(size, file_name)
+        print("Starting receiving {} of {}".format(size, file_name))
         res = recv_file(client, size, file_name, compress)
         send_echo(client, res)
-    print "All Done\n"
+    print("All Done\n")
     client.close()
 
 
@@ -135,7 +134,7 @@ def start(host, port):
         except:
             pass
         else:
-            print "Connected to {}".format(addr)
+            print("Connected to {}".format(addr))
             td = threading.Thread(target=process_connetion, args=(clnt,))
             td.start()
         finally:
@@ -179,14 +178,14 @@ class MyFrame(Frame):
     def get_ipaddr(self):
         host_name = socket.gethostname()
         info = socket.gethostbyname_ex(host_name)[2]
-        assert isinstance(info, ListType)
+        assert isinstance(info, list)
         info.append(self.local_ip)
 
     def start_server(self):
         host, port = self.serv_ip.get(), int(self.serv_port.get())
-        print "Starting Server on: {}:{}".format(host, port)
+        print("Starting Server on: {}:{}".format(host, port))
         td = threading.Thread(target=start, args=(host, port))
-        self.start_srv_btn.state(['disabled', ])
+        # self.start_srv_btn.state(['disabled', ])
         td.start()
 
     def exit_server(self):

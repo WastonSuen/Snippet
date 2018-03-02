@@ -25,10 +25,10 @@ if __name__ == '__main__':
             data, addr = clnt.recvfrom(1024)
             # if not data:
             #     data, addr = clnt.recvfrom(1024)
-            print "Received From Server: {}".format(data.decode('utf-8'))
-            data = raw_input("Please give a message to server:\n")
+            print("Received From Server: {}".format(data.decode('utf-8')))
+            data = input("Please give a message to server:\n")
 
     except Exception:
-        print 'Error'
+        print('Error')
     finally:
         clnt.close()

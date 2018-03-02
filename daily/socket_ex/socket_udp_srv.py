@@ -18,7 +18,7 @@ if __name__ == '__main__':
     srv.bind((HOST, PORT))
     while True:
         data, addr = srv.recvfrom(1024)
-        print "Received Data: {}".format(data.decode('utf-8'))
+        print("Received Data: {}".format(data.decode('utf-8')))
         srv.sendto(data, addr)
         if data == b'Bye':
             break

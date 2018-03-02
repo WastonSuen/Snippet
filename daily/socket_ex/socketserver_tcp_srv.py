@@ -13,21 +13,20 @@ import threading
 
 __metaclass__ = type
 
-import SocketServer
+import socketserver
 
-
-class MyHandle(SocketServer.StreamRequestHandler):
+class MyHandle(socketserver.StreamRequestHandler):
     def handle(self):
         # rfile, wfile / request
         while True:
             # data = self.request.recv(1024)
             data = self.rfile.readline()
-            print "Data recevied from client: {}".format(data.decode('utf-8').strip('\n'))
+            print("Data recevied from client: {}".format(data.decode('utf-8').strip('\n')))
             # self.request.sendall(data)
             self.wfile.write(data)
             if data in (b'Bye', b'Bye\n'):
                 break
-        print 'server terminated'
+        print('server terminated')
         td = threading.Thread(target=terminate_srv, args=(srv,))
         td.start()
 
@@ -39,5 +38,5 @@ def terminate_srv(srv):
 if __name__ == '__main__':
     HOST = '127.0.0.1'
     PORT = 12345
-    srv = SocketServer.TCPServer((HOST, PORT), MyHandle)
+    srv = socketserver.TCPServer((HOST, PORT), MyHandle)
     srv.serve_forever()

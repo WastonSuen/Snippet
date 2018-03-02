@@ -19,11 +19,11 @@ def srv_service():
     srv.bind((HOST, PORT))
     srv.listen(5)
     clnt, addr = srv.accept()
-    print "Connectioned To Client: {}".format(addr)
+    print("Connectioned To Client: {}".format(addr))
 
     while True:
         data = clnt.recv(1024)
-        print "Received From Client: {}".format(data.decode('utf-8'))
+        print("Received From Client: {}".format(data.decode('utf-8')))
         clnt.send(data)
         if data == b'Bye':
             break

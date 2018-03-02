@@ -21,12 +21,12 @@ if __name__ == '__main__':
         while data:
             clnt.sendto(data.encode('utf-8'), (HOST, PORT))
             data, addr = clnt.recvfrom(1024)
-            print "Received From Server: {}".format(data.decode('utf-8'))
+            print("Received From Server: {}".format(data.decode('utf-8')))
             if data == b'Bye':
                 break
-            data = raw_input("Please give a message to server:\n")
+            data = input("Please give a message to server:\n")
 
     except Exception as e:
-        print 'Error'
+        print('Error')
     finally:
         clnt.close()
