@@ -130,10 +130,48 @@ def heap_sorting(list):
     return list
 
 
+@clock
+def merge_sorting(list):
+    """
+    归并排序, T(n)=O(nlgn), 先拆分, 再排序, 再合并
+    :param list:
+    :return:
+    """
+
+    def merge(list1, list2):
+        i = j = 0
+        len1 = len(list1)
+        len2 = len(list2)
+        result = []
+        while i <= len1 - 1 and j <= len2 - 1:
+            if list1[i] < list2[j]:
+                result.append(list1[i])
+                i += 1
+            else:
+                result.append(list2[j])
+                j += 1
+        if i != len1:
+            result += list1[i:]
+        if j != len2:
+            result += list2[j:]
+        return result
+
+    def split_merge(list):
+        length = len(list)
+        if length == 1:
+            return merge(list, [])
+        else:
+            return merge(split_merge(list[0:length // 2] or []), split_merge(list[length // 2:] or []))
+
+    result = split_merge(list)
+    return result
+
+
 if __name__ == '__main__':
     l = [i for i in range(500, 0, -1)]
     # bubble(l)
     # select_sorting(l)
     # insertion_sorting(l)
     # quick_sorting(l)
-    heap_sorting(l)
+    # heap_sorting(l)
+    merge_sorting(l)
