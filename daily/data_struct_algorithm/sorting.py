@@ -167,6 +167,22 @@ def merge_sorting(list):
     return result
 
 
+@clock
+def radix_sorting(list, k=3):
+    """
+    基数排序, T(n)=O(nlgn), 分桶排序
+    :param list:
+    :param k:
+    :return:
+    """
+    for kk in range(k):
+        bucket = [[] for i in range(10)]
+        for param in list:
+            bucket[int((param / (10 ** kk)) % 10)].append(param)  # 依次按个位数，十位数...放入相应的桶
+        list = [v for value in bucket for v in value]
+    return list
+
+
 if __name__ == '__main__':
     l = [i for i in range(500, 0, -1)]
     # bubble(l)
@@ -174,4 +190,5 @@ if __name__ == '__main__':
     # insertion_sorting(l)
     # quick_sorting(l)
     # heap_sorting(l)
-    merge_sorting(l)
+    # merge_sorting(l)
+    radix_sorting(l, k=3)
