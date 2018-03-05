@@ -68,7 +68,7 @@ def insertion_sorting(list):
 @clock
 def quick_sorting(list):
     """
-    快速排序, T(n)=[O(nlogn), O(n^2)], 从两端向中间同时遍历, 递归
+    快速排序, T(n)=[O(nlgn), O(n^2)], 从两端向中间同时遍历, 递归
     :param list: 
     :return: 
     """
@@ -97,9 +97,43 @@ def quick_sorting(list):
     return list
 
 
+@clock
+def heap_sorting(list):
+    """
+    堆排序, 完全二叉树排序, T(n)=O(nlgn)
+    :param list: 
+    :return: 
+    """
+
+    def adjust_map_heap(list, i, size):
+        lchild = 2 * i + 1
+        rchild = 2 * i + 2
+        max_index = i
+        if i < size / 2:
+            if lchild < size and list[lchild] > list[max_index]:
+                max_index = lchild
+            if rchild < size and list[rchild] > list[max_index]:
+                max_index = rchild
+            if max_index != i:
+                list[max_index], list[i] = list[i], list[max_index]
+                adjust_map_heap(list, max_index, size)
+
+    def build_map_heap(list, size):
+        for i in range((size // 2) - 1, -1, -1):
+            adjust_map_heap(list, i, size)
+
+    size = len(list)
+    build_map_heap(list, size)
+    for i in range(size - 1, -1, -1):
+        list[i], list[0] = list[0], list[i]
+        adjust_map_heap(list, 0, i)
+    return list
+
+
 if __name__ == '__main__':
-    l = [i for i in range(5, 0, -1)]
-    bubble(l)
-    select_sorting(l)
-    insertion_sorting(l)
-    quick_sorting(l)
+    l = [i for i in range(500, 0, -1)]
+    # bubble(l)
+    # select_sorting(l)
+    # insertion_sorting(l)
+    # quick_sorting(l)
+    heap_sorting(l)
