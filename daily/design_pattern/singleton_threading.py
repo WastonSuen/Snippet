@@ -62,7 +62,7 @@ def task_threading(arg):
 
 
 if __name__ == '__main__':
-    # 会产生相同id的实例, 说明单例模式出现了bug, 多线程模式下, 未加锁会导致线程不安全
+    # 会产生不同id的实例, 说明单例模式出现了bug, 多线程模式下, 未加锁会导致线程不安全
     print('No threading lock:\n')
     for i in range(10):
         t = threading.Thread(target=task, args=[i, ])
