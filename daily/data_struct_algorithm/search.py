@@ -38,7 +38,7 @@ def bisect_search(search_list, value, search_gap=1 / 2, low=0, high=0):
 @clock
 def insertion_search(search_list, value, low=0, high=0):
     """
-    插值查找, 适用于均匀分布的排序列表, 此时优于二分查找
+    插值查找, O(lgn), 适用于均匀分布的排序列表, 此时优于二分查找
     :param search_list: 
     :param value: 
     :param low: 
