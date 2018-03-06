@@ -55,7 +55,7 @@ class SingletonClsWithDecorator(object):
 class SingletonClsWithNewKeyword(object):
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, '_instance'):
-            cls._instance = super().__new__(cls)  # new关键字只传入cls, 其他参数会自动传入
+            cls._instance = super().__new__(cls)  # new关键字只传入cls, __new__ 负责返回实例, __init__ 才真正初始化
         else:
             if not (sorted(cls._instance.args) == sorted(args) and cls._instance.kwargs == kwargs):
                 raise ValueError('单例模式每次实例化参数必须相同')
