@@ -47,6 +47,24 @@ class LinkedList(object):
         self.length -= 1
         return value
 
+    def get_index(self, value):
+        current_node = self.head
+        i = 0
+        while current_node:
+            if value == current_node.value:
+                return i
+            current_node = current_node._next
+            i += 1
+        return None
+
+    def get_item(self, k):
+        if k < 0 or k >= self.length:
+            raise ValueError('index out of range')
+        current_node = self.head
+        for _ in range(k):
+            current_node = current_node._next
+        return current_node.value
+
     def insert(self, k, node):
         item = node if isinstance(node, Node) else Node(node)
         if not self.head or k == self.length:
@@ -88,6 +106,12 @@ class LinkedList(object):
         return value
 
     def update(self, k, node):
+        """
+        两种update方案, 一种是只更新node的value值, 此种方法较为简单, 此处不作讨论。另一种是更新node, 方法如下 
+        :param k: 0<=k<=self.length-1
+        :param node: 
+        :return: 
+        """
         item = node if isinstance(node, Node) else Node(node)
         if not self.head:
             self.append(item)
@@ -106,12 +130,13 @@ class LinkedList(object):
             del curreent_node._next
             curreent_node._next = item
 
-    def print(self):
+    def __repr__(self):
         current_node = self.head
-        print(current_node.value),
-        while current_node._next:
+        values = []
+        while current_node:
+            values.append(current_node.value)
             current_node = current_node._next
-            print(current_node.value),
+        return str(values)
 
 
 if __name__ == '__main__':
@@ -123,4 +148,7 @@ if __name__ == '__main__':
     linked_list.update(1, 4)
     linked_list.remove(0)
     linked_list.insert(0, 5)
-    linked_list.print()
+    print(linked_list)
+    print(linked_list.get_item(1))
+    print(linked_list.get_index(4))
+    print(linked_list.get_index(3))
