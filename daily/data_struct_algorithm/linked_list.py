@@ -130,6 +130,21 @@ class LinkedList(object):
             del curreent_node._next
             curreent_node._next = item
 
+    def __reversed__(self):
+        if self.length in [0, 1]:
+            return self
+        current_node = self.head
+        next_node = current_node._next
+        current_node._next = None  # 单独消除首节点的环
+        while next_node and next_node._next:
+            temp_node = current_node
+            current_node = next_node
+            next_node = next_node._next
+            current_node._next = temp_node
+        next_node._next = current_node  # 单独处理尾节点
+        del self.head, current_node
+        self.head = next_node  # 尾节点变首节点
+
     def __repr__(self):
         current_node = self.head
         values = []
@@ -148,6 +163,8 @@ if __name__ == '__main__':
     linked_list.update(1, 4)
     linked_list.remove(0)
     linked_list.insert(0, 5)
+    print(linked_list)
+    reversed(linked_list)
     print(linked_list)
     print(linked_list.get_item(1))
     print(linked_list.get_index(4))
