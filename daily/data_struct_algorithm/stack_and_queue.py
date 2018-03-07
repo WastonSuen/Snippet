@@ -32,7 +32,13 @@ class Stack(object):
 
     @property
     def top(self):
-        return self.items[-1]
+        try:
+            return self.items[-1]
+        except IndexError:
+            return None
+
+    def insert(self, item, k=0):
+        self.items.insert(k, item)
 
     def pop(self):
         return self.items.pop()
@@ -57,13 +63,14 @@ class Queue(object):
             self.length = 0
 
     def push(self, node):
+        item = node if isinstance(node, Node) else Node(node)
         if not self.head:
-            self.head = node
+            self.head = item
         else:
             current_node = self.head
             while current_node._next:
                 current_node = current_node._next
-            current_node._next = node
+            current_node._next = item
         self.length += 1
         return True
 
@@ -77,6 +84,14 @@ class Queue(object):
             del current_node
             self.length -= 1
             return value
+
+    def clear(self):
+        if not self.head:
+            return
+        current_node = self.head
+        self.head = None
+        self.length = 0
+        del current_node
 
     def __repr__(self):
         current_node = self.head
@@ -103,4 +118,6 @@ if __name__ == '__main__':
     queue.push(Node(2))
     print(queue)
     print(queue.popleft())
+    queue.push(Node(3))
+    queue.push(Node(4))
     print(queue)
