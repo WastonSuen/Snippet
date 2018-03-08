@@ -21,6 +21,11 @@ class QueueBy2Stack(object):
         self.convert = False
 
     def _convert(self):
+        """
+        每次pop之前, 如果有新的push, 都要调用_convert 
+        把栈stack_one pop并push进 stack_two
+        :return: 
+        """
         if self.stack_two.top is not None:
             i = 0
             while self.stack_one.top is not None:
@@ -38,11 +43,19 @@ class QueueBy2Stack(object):
 
 
 class StackBy2Queue(object):
+    """
+    保证取出元素的时候都选择length为1的queue, 优先选择入队队列(queue_one)
+    """
     queue_one = Queue()
     queue_two = Queue()
     flag = False
 
     def push(self, value):
+        """
+        每次push 保证queue_one只存在最多只存在1个元素, pop时优先选择queue_one
+        :param value: 
+        :return: 
+        """
         self.queue_one.push(value)
         self.flag = True
         if self.queue_one.length > 1:
@@ -62,6 +75,8 @@ class StackBy2Queue(object):
             self.queue_two.length = self.queue_one.length
             self.queue_one.clear()
             self.flag = False
+
+            # 如果选择queue_two pop, 且只剩下一个元素，则push进queue_one, 保证下一次push正确
             if self.queue_two.length == 1:
                 self.queue_one.push(self.queue_two.popleft())
                 self.flag = True
@@ -80,7 +95,6 @@ if __name__ == '__main__':
     qbs.push(5)
     print(qbs.pop())
     print(qbs.pop())
-
 
     sbq = StackBy2Queue()
     sbq.push(1)
