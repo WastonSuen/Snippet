@@ -7,9 +7,10 @@
 @time: 17:24
 @note:  ??
 """
+from daily.data_struct_algorithm.stack_and_queue import Queue
 
 
-class Node(object):
+class BinaryNode(object):
     def __init__(self, key, lchild=None, rchild=None):
         self.key = key
         self.lchild = lchild
@@ -18,14 +19,14 @@ class Node(object):
 
 class BinaryTree(object):
     def __init__(self, item):
-        self.root = Node(item)
+        self.root = BinaryNode(item)
 
-    def add(self, item):
-        node = Node(item)
+    def normal_add(self, item):
+        node = BinaryNode(item)
 
         pre_list = [self.root]
         while True:
-            root = pre_list.pop(0)
+            root = pre_list.pop(0)  # 列表取出index为0的元素, 时间复杂度为O(n)
             if root.lchild is None:
                 root.lchild = node
                 break
@@ -36,21 +37,53 @@ class BinaryTree(object):
                 pre_list.append(root.lchild)
                 pre_list.append(root.rchild)
 
-    def traverse(self):
+    def normal_traverse(self):
         """
         层次遍历
         :return: 
         """
-        print(self.root.key)
         traverse_list = [self.root]
         while traverse_list:
             root = traverse_list.pop(0)
+            print(root.key)
             if root.lchild is not None:
-                print(root.lchild.key)
                 traverse_list.append(root.lchild)
             if root.rchild is not None:
-                print(root.rchild.key)
                 traverse_list.append(root.rchild)
+
+    def add(self, item):
+        """
+        添加元素, 队列实现
+        :param item:
+        :return:
+        """
+        node = BinaryNode(item)
+        queue = Queue(self.root)
+        while True:
+            root = queue.popleft()
+            if root.lchild is None:
+                root.lchild = node
+                break
+            elif root.rchild is None:
+                root.rchild = node
+                break
+            else:
+                queue.push(root.lchild)
+                queue.push(root.rchild)
+
+    def traverse(self):
+        """
+        层次遍历, 队列实现
+        :return:
+        """
+        traverse_queue = Queue(self.root)
+        while traverse_queue.length > 0:
+            root = traverse_queue.popleft()
+            print(root.key)
+            if root.lchild is not None:
+                traverse_queue.push(root.lchild)
+            if root.rchild is not None:
+                traverse_queue.push(root.rchild)
 
 
 if __name__ == '__main__':

@@ -56,7 +56,7 @@ class Node(object):
 class Queue(object):
     def __init__(self, node=None):
         if node:
-            self.head = node
+            self.head = node if isinstance(node, Node) else Node(node)
             self.length = 1
         else:
             self.head = None
