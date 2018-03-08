@@ -7,7 +7,7 @@
 @time: 17:24
 @note:  ??
 """
-from daily.data_struct_algorithm.stack_and_queue import Queue
+from daily.data_struct_algorithm.stack_and_queue import Queue, Stack
 
 
 class BinaryNode(object):
@@ -85,6 +85,20 @@ class BinaryTree(object):
             if root.rchild is not None:
                 traverse_queue.push(root.rchild)
 
+    def pre_traverse(self):
+        """
+        先序遍历, list实现, 或Stack实现也可
+        :return:
+        """
+        pre_traverse_list = [self.root]
+        while pre_traverse_list:
+            root = pre_traverse_list.pop()
+            print(root.key)
+            if root.rchild is not None:
+                pre_traverse_list.append(root.rchild)
+            if root.lchild is not None:
+                pre_traverse_list.append(root.lchild)
+
 
 if __name__ == '__main__':
     bt = BinaryTree(0)
@@ -93,3 +107,4 @@ if __name__ == '__main__':
     bt.add(3)
     bt.add(4)
     bt.traverse()
+    bt.pre_traverse()
