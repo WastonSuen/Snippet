@@ -77,13 +77,15 @@ class BinaryTree(object):
         :return:
         """
         traverse_queue = Queue(self.root)
+        traverse_result = []
         while traverse_queue.length > 0:
             root = traverse_queue.popleft()
-            print(root.key)
+            traverse_result.append(root.key)
             if root.lchild is not None:
                 traverse_queue.push(root.lchild)
             if root.rchild is not None:
                 traverse_queue.push(root.rchild)
+        return traverse_result
 
     def pre_traverse(self):
         """
@@ -91,13 +93,40 @@ class BinaryTree(object):
         :return:
         """
         pre_traverse_list = [self.root]
+        traverse_result = []
         while pre_traverse_list:
             root = pre_traverse_list.pop()
-            print(root.key)
+            traverse_result.append(root.key)
             if root.rchild is not None:
                 pre_traverse_list.append(root.rchild)
             if root.lchild is not None:
                 pre_traverse_list.append(root.lchild)
+        return traverse_result
+
+    def in_traverse(self, root=None):
+        """
+        中序遍历,
+        :return: 
+        """
+        if not root: root = self.root
+        left_list = []
+        right_list = []
+        if root.lchild: left_list += self.in_traverse(root.lchild)
+        if root.rchild: right_list += self.in_traverse(root.rchild)
+        return left_list + [root.key] + right_list
+
+    def after_traverse(self, root=None):
+        """
+        后序遍历
+        :param root: 
+        :return: 
+        """
+        if not root: root = self.root
+        left_list = []
+        right_list = []
+        if root.lchild: left_list += self.after_traverse(root.lchild)
+        if root.rchild: right_list += self.after_traverse(root.rchild)
+        return left_list + right_list + [root.key]
 
 
 if __name__ == '__main__':
@@ -106,5 +135,13 @@ if __name__ == '__main__':
     bt.add(2)
     bt.add(3)
     bt.add(4)
-    bt.traverse()
-    bt.pre_traverse()
+    bt.add(5)
+    bt.add(6)
+    bt.add(7)
+    bt.add(8)
+    bt.add(9)
+
+    print(bt.traverse())
+    print(bt.pre_traverse())
+    print(bt.in_traverse())
+    print(bt.after_traverse())
