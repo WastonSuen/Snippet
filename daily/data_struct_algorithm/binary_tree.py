@@ -16,15 +16,20 @@ class BinaryNode(object):
         self.lchild = lchild
         self.rchild = rchild
 
+    def __repr__(self):
+        return '<Binary Node, key:{}>\n lchild:{}\n rchild:{}'.format(self.key, self.lchild, self.rchild)
+
 
 class BinaryTree(object):
     def __init__(self, item):
         self.root = BinaryNode(item)
+        self.size = 1
 
     def normal_add(self, item):
         node = BinaryNode(item)
 
         pre_list = [self.root]
+        self.size += 1
         while True:
             root = pre_list.pop(0)  # 列表取出index为0的元素, 时间复杂度为O(n)
             if root.lchild is None:
@@ -59,6 +64,7 @@ class BinaryTree(object):
         """
         node = BinaryNode(item)
         queue = Queue(self.root)
+        self.size += 1
         while True:
             root = queue.popleft()
             if root.lchild is None:
