@@ -4,3 +4,4 @@ train.*
 test.*
 target.*
 test
+venv
