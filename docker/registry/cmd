@@ -1,9 +1,0 @@
-docker pull registry:2
-
-docker run -p 15000:5000 -v /home/www/docker/db:/var/lib/registry -d --name regis registry:2
-
-# nginx-docker passwd:
-sudo apt install apache2-utils -y
-sudo htpasswd -c /etc/nginx/docker-registry-htpasswd docker
-docker login -u docker -p suen docker.registry.cn
-curl docker:suen@http://docker.registry.cn

@@ -1,7 +1,0 @@
-env/
-.idea/
-static/
-test/
-*.pyc
-local_config.py
-logs/
